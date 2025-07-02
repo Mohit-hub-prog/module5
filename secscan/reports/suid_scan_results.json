@@ -1,0 +1,422 @@
+[
+  {
+    "path": "/etc/alternatives/rsh",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/etc/alternatives/rlogin",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/libexec/polkit-agent-helper-1",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/rsh",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/sudo",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/sudoedit",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_rz_killerbee",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/passwd",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_linux_bluetooth",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/fusermount",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_ubertooth_one",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/sg",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/umount",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_nrf_mousejack",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/rlogin",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_linux_wifi",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/fusermount3",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_hak5_wifi_coconut",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/mount",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/rsh-redone-rlogin",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/chsh",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_ti_cc_2540",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/gpasswd",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_ti_cc_2531",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/rsh-redone-rsh",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/pkexec",
+    "risky": true,
+    "description": "Polkit pkexec privilege escalation",
+    "cve": "CVE-2021-4034"
+  },
+  {
+    "path": "/usr/bin/chfn",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/newgrp",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_nrf_52840",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/su",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/ntfs-3g",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_nrf_51822",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/bin/kismet_cap_nxp_kw41z",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/mount.ntfs",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/pppd",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/umount.nfs4",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/mount.nfs4",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/mount.cifs",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/mount.smb3",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/mount.ntfs-3g",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/mount.nfs",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/sbin/umount.nfs",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/lib/xorg/Xorg.wrap",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/lib/mysql/plugin/auth_pam_tool_dir/auth_pam_tool",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/lib/chromium/chrome-sandbox",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/lib/openssh/ssh-keysign",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/lib/dbus-1.0/dbus-daemon-launch-helper",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/lib/policykit-1/polkit-agent-helper-1",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/usr/lib/polkit-1/polkit-agent-helper-1",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/1834/exe",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/1834/task/1834/exe",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/1834/map_files/564840e4e000-564840e50000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/1834/map_files/564840e50000-564840e54000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/1834/map_files/564840e54000-564840e56000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/1834/map_files/564840e56000-564840e57000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/1834/map_files/564840e57000-564840e58000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5709/exe",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5709/task/5709/exe",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5709/map_files/562835028000-56283502e000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5709/map_files/56283502e000-56283505f000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5709/map_files/56283505f000-562835070000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5709/map_files/562835070000-562835072000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5709/map_files/562835072000-562835074000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5710/exe",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5710/task/5710/exe",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5710/map_files/562835028000-56283502e000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5710/map_files/56283502e000-56283505f000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5710/map_files/56283505f000-562835070000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5710/map_files/562835070000-562835072000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  },
+  {
+    "path": "/proc/5710/map_files/562835072000-562835074000",
+    "risky": false,
+    "description": "No known risk",
+    "cve": "-"
+  }
+]
