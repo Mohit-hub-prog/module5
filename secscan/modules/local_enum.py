@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
-#Creater: @shivshubh
+#Auther: @shivshubh
 
 import subprocess
 import os
 import getpass
+import shutil
 import platform
 from datetime import datetime
+from colorama import Fore, Style, init
+init(autoreset=True)
 
 # Colors
 RED = '\033[1;31m'
@@ -16,6 +19,12 @@ RESET = '\033[00m'
 ORANGE = '\033[38;5;166m'
 
 LOG_FILE = "enum_report.txt"
+
+def banner():
+    print(Fore.RED + Style.BRIGHT + r"""
+        [ Automated Local Enumeration Scanner ]
+              Ceated by: Shubham Bane
+    """ + Style.RESET_ALL)
 
 def write_log(output):
     with open(LOG_FILE, 'a') as f:
@@ -111,10 +120,11 @@ def security_info():
 # Main
 # -----------------------------------
 
-def main():
+def run_enum():
     open(LOG_FILE, 'w').close()  # Clear previous logs
     print_and_log(f"[+] Starting enumeration at {datetime.now()}\n", GREEN)
     
+    banner()
     system_info()
     version_info()
     network_info()
@@ -124,8 +134,8 @@ def main():
     cron_and_services()
     security_info()
 
-    print_and_log(f"[✔] Enumeration Complete. Output saved to {LOG_FILE}", GREEN)
+    print_and_log(f"[✔] Enumeration Complete. Output saved to enum_report.txt", GREEN)
 
 if __name__ == "__main__":
     import shutil
-    main()
+    run_enum()
