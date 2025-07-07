@@ -1,9 +1,5 @@
-from modules import cve_mapper
+from modules.cve_mapper import map_cves_to_software
 
-kernel = "5.8.0"
-software = ["apache 2.4.29", "openssl 1.0.1", "pkexec 0.105"]
-
-# Run the mapping
-results = cve_mapper.map_cves_to_software(kernel, software)
-
-print(f"[+] {len(results)} high severity CVEs saved to 'cve_results.txt'")
+kernel = "5.15.0"
+software = ["apache", "nginx", "openssl"]
+map_cves_to_software(kernel, software)
