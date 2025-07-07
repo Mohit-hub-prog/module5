@@ -11,7 +11,13 @@ from colorama import Fore, Style, init
 
 init(autoreset=True)
 
-def collect_system_info():
+def banner():
+    print(Fore.RED + Style.BRIGHT + r"""
+        [ Basic System information finder ]
+              Ceated by: Shubham Bane
+    """ + Style.RESET_ALL)
+
+def get_system_info():
     data = {
         "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "OS": platform.system(),
@@ -38,6 +44,8 @@ def collect_system_info():
     return data
 
 def display_info(info):
+
+    banner()
     print(Fore.CYAN + "\n--- System Information ---\n" + Style.RESET_ALL)
     for key, val in info.items():
         if isinstance(val, dict):
@@ -62,6 +70,6 @@ def save_info(info):
         json.dump(info, js, indent=4)
 
 if __name__ == "__main__":
-    info = collect_system_info()
+    info = get_system_info()
     display_info(info)
     save_info(info)
