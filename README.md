@@ -1,6 +1,6 @@
-# SECScan — Linux Security Misconfiguration & CVE Scanner
+# Linux Security Misconfiguration & CVE Scanner
 
-SECScan is a modular security auditing tool for Linux systems, designed to help ethical hackers and security analysts identify:
+This is a modular security auditing tool for Linux systems, designed to help ethical hackers and security analysts identify:
 
 - Local misconfigurations
 - SUID permission issues
