@@ -1,9 +1,20 @@
 import argparse
 import subprocess
 import socket
+from colorama import Fore, Style, init
+import sys
+
+init(autoreset=True)
+
+def banner():
+    print(Fore.RED + Style.BRIGHT + r"""
+    
+         [ Remote IP Enumeration Tool ]
+          Created by: Jyoti Chandrika
+    """ + Style.RESET_ALL)
 
 # --------------------------------------------
-# Updated known vulnerable services
+# Known vulnerable services
 # --------------------------------------------
 known_services = {
     'Apache': {
@@ -59,16 +70,17 @@ known_services = {
 }
 
 # --------------------------------------------
-# Argument parser
+# Argument parser (global to reuse for help)
 # --------------------------------------------
+parser = argparse.ArgumentParser(description='Remote Enumeration Tool')
+parser.add_argument('--remote', type=str, help='Target IP address')
+parser.add_argument('--output', type=str, default='remote_report.txt', help='Output report file')
+
 def parse_args():
-    parser = argparse.ArgumentParser(description='Remote Enumeration Tool')
-    parser.add_argument('--remote', type=str, help='Target IP address')
-    parser.add_argument('--output', type=str, default='remote_report.txt', help='Output report file')
     return parser.parse_args()
 
 # --------------------------------------------
-# Run nmap port and service scan
+# Nmap scan
 # --------------------------------------------
 def scan_ports(ip):
     print(f"[+] Running Nmap scan on {ip} ...")
@@ -80,7 +92,7 @@ def scan_ports(ip):
         return f"[!] Nmap scan failed: {e}"
 
 # --------------------------------------------
-# Grab banners using protocol-specific commands
+# Banner grabbing
 # --------------------------------------------
 def grab_banner(ip, port):
     try:
@@ -94,10 +106,6 @@ def grab_banner(ip, port):
                 s.sendall(b'CAPA\r\n')
             elif port == 25:
                 s.sendall(b'EHLO test\r\n')
-            elif port == 21:
-                pass
-            elif port == 22:
-                pass
 
             banner = s.recv(1024).decode(errors='ignore')
             return banner.strip()
@@ -105,7 +113,7 @@ def grab_banner(ip, port):
         return "No banner retrieved"
 
 # --------------------------------------------
-# Match service names against known vulnerabilities
+# Map service output to CVEs
 # --------------------------------------------
 def map_service_to_cve(text_output):
     findings = []
@@ -122,7 +130,7 @@ def map_service_to_cve(text_output):
     return findings
 
 # --------------------------------------------
-# Format results for console and file
+# Format and print/save results
 # --------------------------------------------
 def format_results(ip, nmap_out, banners, vulns):
     lines = [f"\n==== Remote Enumeration for {ip} ====\n"]
@@ -146,14 +154,16 @@ def format_results(ip, nmap_out, banners, vulns):
     return '\n'.join(lines)
 
 # --------------------------------------------
-# Main controller
+# Main logic
 # --------------------------------------------
-def main():
+def scan_remote_host():
+    banner()
     args = parse_args()
 
     if not args.remote:
-        print("[!] Please provide a target IP using --remote <IP>")
-        return
+        print(Fore.RED + "[!] No target IP provided.\n")
+        parser.print_help()
+        sys.exit(1)
 
     ip = args.remote
     nmap_output = scan_ports(ip)
@@ -161,18 +171,18 @@ def main():
     common_ports = [21, 22, 23, 25, 53, 80, 110, 139, 143, 443, 3306, 135, 445, 3389, 7070]
     banners = {}
     for port in common_ports:
-        print(f"[*] Grabbing banner from port {port}...")
+        print(Fore.YELLOW + f"[*] Grabbing banner from port {port}...")
         banners[port] = grab_banner(ip, port)
 
     combined_text = nmap_output + "\n" + "\n".join(banners.values())
     matched_vulns = map_service_to_cve(combined_text)
 
     report_text = format_results(ip, nmap_output, banners, matched_vulns)
-    print(report_text)
+    print(Fore.CYAN + report_text)
 
     with open(args.output, 'w') as f:
         f.write(report_text)
-        print(f"\n[+] Remote enumeration results saved to: {args.output}")
+        print(Fore.GREEN + f"\n[+] Remote enumeration results saved to: {args.output}")
 
 if __name__ == "__main__":
-    main()
+    scan_remote_host()
