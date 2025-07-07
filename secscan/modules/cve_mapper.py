@@ -1,12 +1,47 @@
 # modules/cve_mapper.py
+import json
 import nvdlib
 import os
+from colorama import Fore, Style, init
+from datetime import datetime
+
+#Creater: Mohit
+
+init(autoreset=True)  # Color resets automatically
+
+def banner():
+    print(Fore.RED + Style.BRIGHT + r"""
+   ______   __     ______     ______   ______     __  __    
+  /\  ___\ /\ \   /\  __ \   /\__  _\ /\  __ \   /\ \_\ \   
+  \ \  __\ \ \ \  \ \  __ \  \/_/\ \/ \ \ \/\ \  \ \____ \  
+   \ \_\    \ \_\  \ \_\ \_\    \ \_\  \ \_____\  \/\_____\ 
+    \/_/     \/_/   \/_/\/_/     \/_/   \/_____/   \/_____/ 
+                                                           
+  [ CVE MAPPER TOOL ]  
+    """ + Style.RESET_ALL)
+
+
 
 def load_cve_data(json_path):
     if not os.path.exists(json_path):
-        raise FileNotFoundError(f"CVE data file not found at: {json_path}")
-    print(f"[+] Loading CVE data from: {json_path}")
-    return nvdlib.loadJSON(json_path)
+        raise FileNotFoundError(f"{Fore.RED}[!] CVE data file not found at: {json_path}")
+    print(f"{Fore.CYAN}[+] Loading CVE data from: {json_path}")
+
+    with open(json_path, 'r') as f:
+        data = json.load(f)
+    
+    cves = []
+    for item in data['CVE_Items']:
+        cve = type('SimpleCVE', (), {})()
+        cve.id = item['cve']['CVE_data_meta']['ID']
+        cve.descriptions = [type('Desc', (), {"value": item['cve']['description']['description_data'][0]['value']})()]
+        cve.published = item['publishedDate']
+        cve.lastModified = item['lastModifiedDate']
+        cve.sourceIdentifier = item['cve']['CVE_data_meta']['ID']
+        cve.score = item.get('impact', {}).get('baseMetricV2', {}).get('cvssV2', {}).get('baseScore', 0.0)
+        cves.append(cve)
+    
+    return cves
 
 def classify_owasp(description):
     description = description.lower()
@@ -27,22 +62,31 @@ def classify_owasp(description):
     else:
         return "Unclassified"
 
+
 def add_manual_vuln(cves):
     manual_entry = type('ManualCVE', (), {})()
     manual_entry.id = "CVE-9999-0001"
     manual_entry.score = 9.0
-    manual_entry.descriptions = [type('Desc', (), {"value": "Test Injection vulnerability in apache 2.4.29 allows remote code execution via special request."})()]
+    manual_entry.descriptions = [
+        type('Desc', (), {
+            "value": "Test Injection vulnerability in apache 2.4.29 allows remote code execution via special request."
+        })()
+    ]
     manual_entry.published = "2025-07-01 12:00:00"
     manual_entry.lastModified = "2025-07-01 12:00:00"
     manual_entry.sourceIdentifier = "ManualEntry"
     cves.append(manual_entry)
     return cves
 
-def map_cves_to_software(kernel_version, software_list, json_path='./data/nvdcve-1.1-recent.json', output_txt='cve_results.txt'):
+
+def map_cves_to_software(kernel_version, software_list,
+                         json_path='./data/nvdcve-1.1-recent.json',
+                         output_txt='cve_results.txt'):
+    banner()
     try:
         cves = load_cve_data(json_path)
     except Exception as e:
-        print(f"[!] Error loading CVE data: {e}")
+        print(f"{Fore.RED}[!] Error loading CVE data: {e}")
         cves = []
 
     cves = add_manual_vuln(cves)
@@ -51,6 +95,8 @@ def map_cves_to_software(kernel_version, software_list, json_path='./data/nvdcve
     kernel_version = kernel_version.lower().strip()
     software_list = [s.lower() for s in software_list]
 
+    print(f"{Fore.YELLOW}[+] Scanning {len(cves)} CVEs for relevant matches...\n")
+
     for cve in cves:
         if not hasattr(cve, 'descriptions') or not cve.descriptions:
             continue
@@ -58,11 +104,9 @@ def map_cves_to_software(kernel_version, software_list, json_path='./data/nvdcve
         description = cve.descriptions[0].value.lower()
         matched = False
 
-        # Check kernel version in description
         if 'linux' in description and kernel_version in description:
             matched = True
 
-        # Check software names and versions
         for sw in software_list:
             if sw in description:
                 matched = True
@@ -71,6 +115,9 @@ def map_cves_to_software(kernel_version, software_list, json_path='./data/nvdcve
         if matched:
             severity = getattr(cve, 'score', 0.0)
             if severity and float(severity) >= 7.0:
+                owasp = classify_owasp(description)
+                print(f"{Fore.GREEN}[+] {cve.id} matched ({owasp}) - Severity: {severity}")
+
                 entry = {
                     'cve_id': cve.id,
                     'severity': severity,
@@ -78,11 +125,10 @@ def map_cves_to_software(kernel_version, software_list, json_path='./data/nvdcve
                     'published': str(cve.published),
                     'lastModified': str(cve.lastModified),
                     'sourceIdentifier': cve.sourceIdentifier,
-                    'owasp_category': classify_owasp(description)
+                    'owasp_category': owasp
                 }
                 results.append(entry)
 
-    # Write results to output file
     if results:
         with open(output_txt, 'w') as f:
             for v in results:
@@ -93,6 +139,8 @@ def map_cves_to_software(kernel_version, software_list, json_path='./data/nvdcve
                 f.write(f"Description  : {v['description'][:300]}...\n")
                 f.write(f"Source       : {v['sourceIdentifier']}\n")
                 f.write("-" * 60 + "\n")
-        print(f"[+] Output saved to {output_txt}")
+        print(f"\n{Fore.BLUE}[+] Report saved to {output_txt}")
+    else:
+        print(f"{Fore.MAGENTA}[!] No high-severity CVEs matched your inputs.")
 
     return results
