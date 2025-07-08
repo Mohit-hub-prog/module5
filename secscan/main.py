@@ -1,5 +1,6 @@
 # main.py
 
+import subprocess
 import argparse
 import sys
 import re
@@ -14,7 +15,6 @@ parser.add_argument('--suid', action='store_true', help='Run SUID misconfigurati
 parser.add_argument('--cve', action='store_true', help='Run CVE & OWASP mapping (requires nvdcve JSON)')
 parser.add_argument('--remote', nargs='?', const='127.0.0.1', help='Run remote port scan (default: 127.0.0.1)')
 parser.add_argument('--all', action='store_true', help='Run all available modules')
-parser.add_argument('--output', type=str, help='Save findings to an output report file (e.g., output.html)')
 
 
 def banner():
@@ -134,16 +134,47 @@ def main():
             results['suid'] = suid_scanner.scan_suid()
 
         if args.cve:
-            print("\n[+] Running CVE & OWASP Mapping...")
+            print("\n[+] Running CVE & OWASP Mapping (Self-contained)...")
 
-            if not sysinfo_data:
-                sysinfo_data = system_info.get_system_info()
-            if not enum_data:
-                enum_data = local_enum.run_enum()
+            # -------- Get Kernel Version Directly --------
+            try:
+                kernel_output = subprocess.check_output(['uname', '-r']).decode().strip()
+                print(f"[✔] Kernel Version Detected: {kernel_output}")
+            except Exception as e:
+                print(f"[!] Failed to get kernel version: {e}")
+                kernel_output = "unknown"
 
-            kernel = sysinfo_data.get("Kernel", "unknown")
-            software_list = extract_software_from_enum(enum_data)
-            results['cve'] = cve_mapper.map_cves_to_software(kernel, software_list)
+            # -------- Detect Installed Software --------
+            print("[+] Detecting installed/active software...")
+            try:
+                ps_output = subprocess.check_output(['ps', 'aux']).decode().lower()
+            except Exception as e:
+                print(f"[!] Failed to detect running processes: {e}")
+                ps_output = ""
+
+            known_patterns = {
+                'apache': r'(apache2|httpd)',
+                'nginx': r'nginx',
+                'mysql': r'mysql|mariadb',
+                'openssl': r'openssl',
+                'sshd': r'openssh|sshd',
+                'postgres': r'postgresql',
+                'ftp': r'vsftpd|proftpd|pure-ftpd',
+                'docker': r'docker',
+                'cron': r'cron|crond',
+                'php': r'php',
+            }
+
+            found_software = []
+            for name, pattern in known_patterns.items():
+                if re.search(pattern, ps_output):
+                    found_software.append(name)
+
+            print(f"[✔] Detected Software: {', '.join(found_software) if found_software else 'None'}")
+
+            # -------- Run CVE Mapper --------
+            results['cve'] = cve_mapper.map_cves_to_software(kernel_output, found_software)
+
 
         if args.remote is not None:
             remote_ip = args.remote.strip()
@@ -153,27 +184,6 @@ def main():
                 sys.exit(1)
             print(f"\n[+] Running Remote Scanner on {remote_ip}...")
             results['remote'] = remote_scans.scan_remote_host()
-
-    # ------------------- Save to Output File ---------------------------
-
-    if args.output:
-        with open(args.output, 'w') as f:
-            f.write("<html><head><title>SECScan Report</title></head><body>")
-            f.write("<h1>SECScan Security Report</h1>")
-            for section, data in results.items():
-                f.write(f"<h2>{section.upper()}</h2><ul>")
-                if isinstance(data, list):
-                    for item in data:
-                        f.write(f"<li>{item}</li>")
-                elif isinstance(data, dict):
-                    for k, v in data.items():
-                        f.write(f"<li><b>{k}</b>: {v}</li>")
-                else:
-                    f.write(f"<li>{data}</li>")
-                f.write("</ul>")
-            f.write("</body></html>")
-        print(f"\n[✔] Report saved to {args.output}")
-
 
 if __name__ == "__main__":
     main()
