@@ -45,7 +45,7 @@ def run(cmd_desc, cmd):
     try:
         output = subprocess.check_output(cmd, shell=True, stderr=subprocess.DEVNULL, text=True)
     except subprocess.CalledProcessError:
-        output = "[!] Command failed or not available."
+        output = "[!] Need to access Root Terminal."
     print_and_log(output.strip())
     print_and_log("")  # newline
 
@@ -80,30 +80,19 @@ def version_info():
         if shutil.which(cmd.split()[0]):
             run(desc, cmd)
 
-def network_info():
-    header("Networking")
-    run("IP Address", "ip -4 addr show | grep inet")
-    run("Routing Table", "ip route")
-    run("Listening Ports", "ss -tuln")
-
 def user_info():
     header("Users and Logins")
     run("Users (non-system)", "awk -F: '$3 >= 1000 { print $1 }' /etc/passwd")
     run("Logged In Users", "w")
     run("Sudo Privileges (if any)", "sudo -l")
 
-def filesystem_info():
-    header("File System Permissions")
-    run("Mounted Filesystems", "cat /etc/fstab")
-    run("Home Directory Content", "ls -alh /home/")
-    run("SUID Files", "find / -perm -4000 -type f")
 
 def shadow_info():
     header("Shadow File Dump (if root)")
     if is_root():
         run("Dumping Shadow File", "cut -d ':' -f1-2 /etc/shadow | grep -vE '\\*|!'")
     else:
-        print_and_log("[!] You are not root. Shadow file requires root access.", RED)
+        print_and_log("[!] You are not in root terminal. Shadow file requires root access.", RED)
 
 def cron_and_services():
     header("Scheduled Jobs and Services")
@@ -127,9 +116,7 @@ def run_enum():
     banner()
     system_info()
     version_info()
-    network_info()
     user_info()
-    filesystem_info()
     shadow_info()
     cron_and_services()
     security_info()
